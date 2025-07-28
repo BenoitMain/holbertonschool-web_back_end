@@ -2,9 +2,8 @@
 """
 Module for summing a list of floating point numbers.
 
-Functions:
-    sum_list(input_list: list[float]) -> float: Returns the sum of a list of floats.
 """
+
 
 def sum_list(input_list: list[float]) -> float:
     """
