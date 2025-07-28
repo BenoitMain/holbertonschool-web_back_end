@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-import math
-
 """
 Module for computing the floor of a floating point number.
 
@@ -19,4 +17,4 @@ def floor(n: float) -> int:
     Returns:
         int: The largest integer less than or equal to n.
     """
-    return math.floor(n)
+    return int(n)
