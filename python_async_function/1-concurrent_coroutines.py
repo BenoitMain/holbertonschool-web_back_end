@@ -13,22 +13,10 @@ import importlib
 wait_random = importlib.import_module("0-basic_async_syntax").wait_random
 
 
-async def wait_n(n: int, max_delay: int) -> list[float]:
+async def wait_n(n: int, max_delay: int) -> List[float]:
     """
-
-    Args:
-        n (int): Number of coroutines to spawn.
-        max_delay (int): Maximum delay for each coroutine.
-
-    Returns:
-        list[float]: List of delays (float values) in ascending order.
+    Execute multiple coroutines concurrently and return sorted delays
     """
-    tasks = [wait_random(max_delay) for _ in range(n)]
-    delays = await asyncio.gather(*tasks)
-    result = []
-    for delay in delays:
-        i = 0
-        while i < len(result) and result[i] < delay:
-            i += 1
-        result.insert(i, delay)
-    return result
+    delays_coroutines = [wait_random(max_delay) for _ in range(n)]
+    delays = await asyncio.gather(*delays_coroutines)
+    return sorted(delays)
