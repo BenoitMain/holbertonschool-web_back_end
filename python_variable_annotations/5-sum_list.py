@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
+from typing import  List
 """
 Module for summing a list of floating point numbers.
 
 """
 
 
-def sum_list(input_list: list[float]) -> float:
+def sum_list(input_list: List[float]) -> float:
     """
     Returns the sum of a list of floating point numbers.
 
