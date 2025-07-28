@@ -6,7 +6,7 @@ Functions:
     wait_n(n: int, max_delay: int) -> list[float]:
     Spawns n wait_random coroutines & returns their delays in ascending order.
 """
-
+from typing import List
 import asyncio
 import importlib
 
