@@ -8,7 +8,7 @@ import random
 from typing import Generator
 
 
-async def async_generator() -> Generator[float, None]:
+async def async_generator() -> Generator[float, None, None]:
     """
     This coroutine waits 1 second between each yield and produces a
     random floating-point number in the range [0, 10) using the random module.
