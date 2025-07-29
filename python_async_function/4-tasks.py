@@ -10,7 +10,7 @@ import importlib
 task_wait_random = importlib.import_module("3-tasks").task_wait_random
 
 
-async def task_wait_n(n: int, max_delay: int) -> List[float]:
+def task_wait_n(n: int, max_delay: int) -> List[float]:
     """
     Spawn n task_wait_random coroutines concurrently,
     return list of delays sorted.
