@@ -5,10 +5,8 @@ Module for collecting random floats asynchronously using async comprehension.
 """
 import time
 import asyncio
-import imaplib
 
-async_comprehension = importlib.import_module(
-    "1-async_comprehension").async_comprehension
+async_comprehension = __import__('1-async_comprehension').async_comprehension
 
 
 async def measure_runtime() -> float:
