@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
-import csv
-import math
-from typing import List
 """
 Module to paginate a dataset of popular baby names.
 """
+
+
+import csv
+import math
+from typing import List
+
 
 def index_range(page: int, page_size: int) -> tuple:
     """
