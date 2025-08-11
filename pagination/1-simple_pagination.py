@@ -61,15 +61,11 @@ class Server:
             List[List]: The list of rows for the page or
             an empty list if out of range.
         """
-        assert isinstance(page, int) and page > 0, (
-            "page must be an integer > 0"
-            )
-        assert isinstance(page_size, int) and page_size > 0, (
-            "page_size must be an integer > 0"
-            )
-
-        data = self.dataset()
+        assert isinstance(page, int) and page > 0
+        assert isinstance(page_size, int) and page_size > 0
 
         start, end = index_range(page, page_size)
+        data = self.dataset()
+        page_data = data[start:end]
 
-        return data[start:end]
+        return page_data
