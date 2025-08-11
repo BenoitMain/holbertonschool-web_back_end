@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
+"""
+    Calculate the start and end indexes for pagination.
+"""
+
 
 def index_range(page: int, page_size: int) -> tuple:
     """
-    Calculate the start and end indexes for pagination.
 
     Given a page number and the number of items per page, this function
     returns a tuple containing the start index (inclusive) and the end
