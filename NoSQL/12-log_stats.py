@@ -28,5 +28,6 @@ def log():
     })
     print(f"{status_checks} status check")
 
+
 if __name__ == "__main__":
     log()
