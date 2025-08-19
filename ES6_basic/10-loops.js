@@ -3,6 +3,7 @@ export default function appendToEachArrayValue(array, appendString) {
   for (const value of array) {
     tableau.push(appendString + value);
   };
+  
   return tableau;
 }
 
