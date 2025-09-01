@@ -1,10 +1,10 @@
 console.log(`Welcome to Holberton School, what is your name?`)
-process.stdin.on(`data`, (data) => {
-  const name = data.toString().trim()
-  process.stdout.write(`Your name is:`)
-  console.log(`${name}`)
-  process.exit()
+
+process.stdin.on(`readable`, () => {
+  const name = process.stdin.read();
+  if (name !== null)
+  process.stdout.write(`Your name is: ${name}`);
 })  
-process.on('exit', (code) => {
-  console.log(`This important software is now closing`)
+process.on('end', () => {
+  process.stdout.write(`This important software is now closing\n`)
 })
