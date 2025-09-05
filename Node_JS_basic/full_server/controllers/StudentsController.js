@@ -37,5 +37,3 @@ export default class StudentsController {
          });
         }
 }
-
-export default StudentsController;
