@@ -1,6 +1,6 @@
 import readDatabase from "../utils.js";
 
-class StudentsController {
+export default class StudentsController {
     static getAllStudents(req, res) {
         let responseText = 'This is the list of our students';
         const path = process.argv[2];
