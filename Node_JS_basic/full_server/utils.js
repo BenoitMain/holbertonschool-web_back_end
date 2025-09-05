@@ -1,49 +1,31 @@
-const fs = require('fs').promises;
+const fs = require('fs');
 
-async function readDatabase(path) {
-  try {
-    const data = await fs.readFile(path, 'utf8');
-
-    const lines = data
-      .split('\n')
-      .map((line) => line.trim())
-      .filter((line) => line.length > 0);
-
-    if (lines.length <= 1) {
-      return {};
+function readDatabase(path) {
+  return new Promise((resolve, reject) => { // eslint-disable-line consistent-return
+    if (!path) {
+      return reject(new Error('Cannot load the database'));
     }
-
-    const header = lines[0];
-    const rows = lines.slice(1);
-    const cols = header.split(',').map((col) => col.trim().toLowerCase());
-
-    const firstnameIndex = cols.indexOf('firstname');
-    const fieldIndex = cols.indexOf('field');
-
-    if (firstnameIndex === -1 || fieldIndex === -1) {
-      throw new Error('Invalid CSV format: missing firstname or field column');
-    }
-
-    const result = {};
-
-    for (const row of rows) {
-      const cells = row.split(',').map((cell) => cell.trim());
-      const firstname = cells[firstnameIndex];
-      const field = cells[fieldIndex];
-
-      if (!firstname || !field) continue;
-
-      if (!result[field]) {
-        result[field] = [];
+    fs.readFile(path, 'utf8', (error, data) => {
+      if (error) {
+        return reject(new Error('Cannot load the database'));
       }
+      const studentline = data.split('\n');
+      const students = studentline.slice(1);
+      const validStudents = students.filter((line) => line.trim() !== '');
+      const studentsByField = {};
 
-      result[field].push(firstname);
-    }
+      for (const studentline of validStudents) {
+        const parts = studentline.split(',');
+        const firstname = parts[0];
+        const field = parts[parts.length - 1];
 
-    return result;
-  } catch (error) {
-    throw new Error('Cannot load the database');
-  }
+        if (!studentsByField[field]) {
+          studentsByField[field] = [];
+        }
+        studentsByField[field].push(firstname);
+      }
+      return resolve(studentsByField);
+    });
+  });
 }
-
 module.exports = readDatabase;
