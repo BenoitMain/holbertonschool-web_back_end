@@ -1,6 +1,6 @@
 export default class AppController {
   static getHomepage(req, res) {
-    res.set('Content-Type', 'text/plain');
-    res.status(200).send('Hello Holberton School!');
+    res.type('text').status(200);
+    res.send('Hello Holberton School!');
   }
 }
