@@ -16,7 +16,7 @@ class StudentsController {
             }
             res.status(200).send(responseText);
         })
-        .catch((error) => {
+        .catch(() => {
             res.status(500).send(`Cannot load the database`)
         });
     }
@@ -32,10 +32,10 @@ class StudentsController {
             const studentList = students[major];
             res.status(200).send(`List: ${studentList.join(', ')}`);
             })
-        .catch((error) => {
+        .catch(() => {
             res.status(500).send('Cannot load the database');
          })
-        };
+        }
 }
 
 export default StudentsController;
