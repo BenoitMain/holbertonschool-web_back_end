@@ -2,17 +2,20 @@ import readDatabase from '../utils';
 
 export default class StudentsController {
   static getAllStudents(req, res) {
-    res.status(200).setHeader('Content-Type', 'text/plain');
-    const databasePath = process.argv[2];
-    readDatabase(databasePath)
-      .then((data) => {
-        let responseText = 'This is the list of our students\n';
-        const fields = Object.keys(data).sort((a, b) => a.localeCompare(b, 'en', { sensitivity: 'base' }));
-        for (const f of fields) {
-          const students = data[f];
-          responseText += `Number of students in ${f}: ${students.length}. List: ${students.join(', ')}\n`;
+    res.set('Content-Type', 'text/plain');
+    const dbPath = process.argv[2];
+    readDatabase(dbPath)
+      .then((groups) => {
+        const fields = Object.keys(groups)
+          .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
+        let body = 'This is the list of our students\n';
+        for (const field of fields) {
+          const count = groups[field].length;
+          const list = groups[field].join(', ');
+          body += `Number of students in ${field}: ${count}. List: ${list}\n`;
         }
-        res.send(responseText);
+        body = body.trimEnd();
+        res.status(200).send(body);
       })
       .catch(() => {
         res.status(500).send('Cannot load the database');
@@ -20,23 +23,22 @@ export default class StudentsController {
   }
 
   static getAllStudentsByMajor(req, res) {
-    res.status(200).setHeader('Content-Type', 'text/plain');
+    res.set('Content-Type', 'text/plain');
     const { major } = req.params;
-
     if (major !== 'CS' && major !== 'SWE') {
-      return res.status(500).send('Major parameter must be CS or SWE');
+      res.status(500).send('Major parameter must be CS or SWE');
+      return;
     }
-    const databasePath = process.argv[2];
-    readDatabase(databasePath)
-      .then((data) => {
-        const students = data[major] || [];
-        res.send(`List: ${students.join(', ')}`);
+    const dbPath = process.argv[2];
+    readDatabase(dbPath)
+      .then((groups) => {
+        const names = groups[major] || [];
+        const body = `List: ${names.join(', ')}`;
+        res.status(200).send(body);
       })
+
       .catch(() => {
         res.status(500).send('Cannot load the database');
       });
-
-    return undefined;
   }
 }
-

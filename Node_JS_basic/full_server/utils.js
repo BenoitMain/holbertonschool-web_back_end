@@ -1,31 +1,44 @@
-const fs = require('fs');
+import fs from 'fs';
 
-function readDatabase(path) {
-  return new Promise((resolve, reject) => { // eslint-disable-line consistent-return
-    if (!path) {
-      return reject(new Error('Cannot load the database'));
-    }
-    fs.readFile(path, 'utf8', (error, data) => {
-      if (error) {
-        return reject(new Error('Cannot load the database'));
+export default function readDatabase(filePath) {
+  return new Promise((resolve, reject) => {
+    fs.readFile(filePath, 'utf8', (err, data) => {
+      if (err) {
+        reject(new Error('Cannot load the database'));
+        return;
       }
-      const studentline = data.split('\n');
-      const students = studentline.slice(1);
-      const validStudents = students.filter((line) => line.trim() !== '');
-      const studentsByField = {};
 
-      for (const studentline of validStudents) {
-        const parts = studentline.split(',');
-        const firstname = parts[0];
-        const field = parts[parts.length - 1];
+      const lines = data
+        .split('\n')
+        .map((l) => l.trim())
+        .filter((l) => l.length > 0);
 
-        if (!studentsByField[field]) {
-          studentsByField[field] = [];
+      if (lines.length <= 1) {
+        resolve({});
+        return;
+      }
+
+      const header = lines[0];
+      const rows = lines.slice(1);
+      const cols = header.split(',').map((c) => c.trim());
+      const idxFirst = cols.indexOf('firstname');
+      const idxField = cols.indexOf('field');
+      if (idxFirst === -1 || idxField === -1) {
+        reject(new Error('Idx not in range'));
+        return;
+      }
+      const groups = Object.create(null);
+      for (const row of rows) {
+        const cells = row.split(',').map((c) => c.trim());
+        const firstname = cells[idxFirst];
+        const field = cells[idxField];
+        if (!groups[field]) {
+          groups[field] = [];
         }
-        studentsByField[field].push(firstname);
+        groups[field].push(firstname);
       }
-      return resolve(studentsByField);
+
+      resolve(groups);
     });
   });
 }
-module.exports = readDatabase;
